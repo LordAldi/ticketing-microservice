@@ -10,7 +10,12 @@ it("can only be access if the user signed in", async () => {
   const response = await request(app).post("/api/tickets").send({}).expect(401);
 });
 it("returns a status other than 401 if user signed in", async () => {
-  const response = await request(app).post("/api/tickets").send({});
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({});
+  console.log(response.status);
+
   expect(response.status).not.toEqual(401);
 });
 it("return an error if invalid title is provided", async () => {});
